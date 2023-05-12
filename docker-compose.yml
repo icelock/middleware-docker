@@ -30,3 +30,27 @@ services:
     container_name: zookeeper
     ports:
       - "2181:2181"
+  elasticsearch:
+    image: elasticsearch:7.8.0
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - bootstrap.memory_lock=true
+     # - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
+      - discovery.type=single-node
+    volumes:
+      - /tmp/es/data:/usr/share/elasticsearch/data
+      - /tmp/es/logs:/usr/share/elasticsearch/logs
+      - /tmp/es/plugins:/usr/share/elasticsearch/plugins
+    ports:
+      - '9200:9200'
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=123456
+    ports:
+      - '5672:5672'
+      - '15672:15672'
