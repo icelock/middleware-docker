@@ -4,7 +4,6 @@ services:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
-
   kafka9094:
     image: wurstmeister/kafka
     ports:
