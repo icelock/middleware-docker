@@ -1,0 +1,8 @@
+version: '3.1'
+services:
+  redis6:
+    image: redis:6
+    container_name: redis6
+    restart: always
+    ports:
+      - '6379:6379'

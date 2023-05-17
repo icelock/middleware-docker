@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  elasticsearch:
+    image: elasticsearch:7.8.0
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - bootstrap.memory_lock=true
+      # - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
+      - discovery.type=single-node
+    volumes:
+      - /tmp/es/data:/usr/share/elasticsearch/data
+      - /tmp/es/logs:/usr/share/elasticsearch/logs
+      - /tmp/es/plugins:/usr/share/elasticsearch/plugins
+    ports:
+      - '9200:9200'
