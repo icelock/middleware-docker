@@ -1,0 +1,8 @@
+version: '3.1'
+services:
+  ignite:
+    image: apacheignite/ignite
+    restart: always
+    container_name: ignite
+    ports:
+      - "10800:10800"
