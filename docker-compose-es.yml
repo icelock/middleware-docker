@@ -6,11 +6,7 @@ services:
     restart: always
     environment:
       - bootstrap.memory_lock=true
-      # - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
       - discovery.type=single-node
-    volumes:
-      - /tmp/es/data:/usr/share/elasticsearch/data
-      - /tmp/es/logs:/usr/share/elasticsearch/logs
-      - /tmp/es/plugins:/usr/share/elasticsearch/plugins
     ports:
       - '9200:9200'

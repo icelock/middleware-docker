@@ -14,7 +14,3 @@ services:
       --lower_case_table_names=1
     ports:
       - '3306:3306'
-    volumes:
-      - /tmp/mysql/data:/var/lib/mysql
-      - /tmp/mysql/conf:/etc/mysql/conf.d
-      - /tmp/mysql/logs:/logs
