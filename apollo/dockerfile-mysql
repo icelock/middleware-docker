@@ -1,0 +1,10 @@
+# apollo-mysql:latest
+# apollo-sql:2.1.0
+FROM mysql:8
+
+COPY sql/apolloconfigdb.sql docker-entrypoint-initdb.d/
+COPY sql/apolloportaldb.sql docker-entrypoint-initdb.d/
+
+
+
+
