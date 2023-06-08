@@ -1,0 +1,38 @@
+version: "3"
+services:
+  mqnamesrv:
+    image: apache/rocketmq:4.9.4
+    container_name: mqnamesrv
+    ports:
+      - "9876:9876"
+    environment:
+      JAVA_OPT: -server -Xms512m -Xmx512m
+    command: sh mqnamesrv
+
+  mqbroker1:
+    image: apache/rocketmq:4.9.4
+    container_name: mqbroker1
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+      - "10912:10912"
+    environment:
+      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo "brokerIP1 = 192.168.106.128" >> /home/rocketmq/rocketmq-4.9.4/conf/broker.conf
+        sh mqbroker -n 192.168.106.128:9876 -c /home/rocketmq/rocketmq-4.9.4/conf/broker.conf
+    depends_on:
+      - mqnamesrv
+
+  mqconsole:
+    image: apacherocketmq/rocketmq-dashboard:latest
+    container_name: rocketmq-dashboard
+    ports:
+      - "19876:19876"
+    environment:
+      JAVA_OPTS: -Dserver.port=19876 -Drocketmq.namesrv.addr=192.168.106.128:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
+    depends_on:
+      - mqnamesrv
