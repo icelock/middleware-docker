@@ -1,4 +1,4 @@
 
 ```
-git clone apollo-mysql:latest
+git clone https://github.com/icelock/middleware-docker.git
 ```
