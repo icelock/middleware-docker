@@ -1,5 +1,5 @@
 # apollo-mysql:latest
-# docker build -t apollo-mysql:latest .
+# docker build -f dockerfile-mysql -t apollo-mysql:latest .
 # apollo-sql:2.1.0
 FROM mysql:8
 
