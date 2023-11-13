@@ -11,7 +11,7 @@ services:
       DS_USERNAME: "root"
       DS_PASSWORD: "123456"
       APOLLO_PORTAL_ENVS: "DEV"
-      DEV_META: "http://192.168.91.131:8090"
+      DEV_META: "http://192.168.91.131:8080"
     depends_on:
       - apollo-adminservice
 
@@ -23,9 +23,8 @@ services:
       - "8090:8090"
     environment:
       SERVER_PORT: 8090
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true
       EUREKA_INSTANCE_IP_ADDRESS: 192.168.91.131
-      EUREKA_INSTANCE_HOME_PAGE_URL: "http://192.168.91.131:8080"
-      EUREKA_INSTANCE_PREFER_IP_ADDRESS: false
       SPRING_DATASOURCE_URL: 'jdbc:mysql://192.168.91.131:3306/ApolloConfigDB?characterEncoding=utf8'
       SPRING_DATASOURCE_USERNAME: 'root'
       SPRING_DATASOURCE_PASSWORD: '123456'
@@ -41,9 +40,8 @@ services:
       - "8080:8080"
     environment:
       SERVER_PORT: 8080
-      EUREKA_INSTANCE_IP_ADDRESS: 192.168.91.131
-      EUREKA_INSTANCE_HOME_PAGE_URL: "http://192.168.91.131:8080"
-      EUREKA_INSTANCE_PREFER_IP_ADDRESS: false
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: true     #强制使用ip进行注册
+      EUREKA_INSTANCE_IP_ADDRESS: 192.168.91.131  #指定注册的具体ip地址
       SPRING_DATASOURCE_URL: 'jdbc:mysql://192.168.91.131:3306/ApolloConfigDB?characterEncoding=utf8'
       SPRING_DATASOURCE_USERNAME: 'root'
       SPRING_DATASOURCE_PASSWORD: '123456'
