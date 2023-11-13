@@ -58,4 +58,4 @@ services:
       - "3306:3306"
 
 
-
+# 启动后在portal【系统参数】中修改，eureka.service.url和apollo.portal.envs等配置
