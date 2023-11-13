@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  nacos:
+    image: nacos/nacos-server:v2.0.4
+    container_name: nacos
+    ports:
+      - 8848:8848
+      - 9848:9848
+      - 9849:9849
+    environment:
+      TZ: Asia/Shanghai
+      MODE: standalone
+
+# http://192.168.91.131:8848/nacos/  默认密码 nacos/nacos
