@@ -21,10 +21,31 @@ services:
       - prometheus-net
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
     container_name: "grafana"
     ports:
       - "3000:3000"
+    restart: always
+    networks:
+      - prometheus-net
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: "pushgateway"
+    command: --persistence.file=/pushgateway/pushgateway.data
+    ports:
+      - "9091:9091"
+    restart: always
+    networks:
+      - prometheus-net
+
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: "alertmanager"
+    command: --config.file=/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9093:9093"
     restart: always
     networks:
       - prometheus-net
