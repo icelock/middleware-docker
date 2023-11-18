@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  pd1:
+    image: pingcap/pd:v7.1.2
+    container_name: pd1
+    ports:
+      - '2379:2379'
+      - '2380:2380'
+    command:
+      - --name=pd1
+      - --client-urls=http://0.0.0.0:2379
+      - --advertise-client-urls=http://192.168.91.131:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-peer-urls=http://192.168.91.131:2380
+      - --initial-cluster=pd1=http://192.168.91.131:2380
+  tikv1:
+    image: pingcap/tikv:v7.1.2
+    container_name: tikv1
+    ports:
+      - '20160:20160'
+    command:
+      - --addr=0.0.0.0:20160
+      - --advertise-addr=192.168.91.131:20160
+      - --pd=192.168.91.131:2379
+    depends_on:
+      - "pd1"
+
+  tidb:
+    image: pingcap/tidb:v7.1.2
+    ports:
+      - "4000:4000"
+      - "10080:10080"
+    command:
+      - --store=tikv
+      - --path=192.168.91.131:2379
+    depends_on:
+      - "tikv1"
+
+
