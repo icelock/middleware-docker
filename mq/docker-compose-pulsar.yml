@@ -1,0 +1,38 @@
+version: "3"
+services:
+  pulsar:
+    image: apachepulsar/pulsar:3.0.0
+    container_name: "pulsar_standalone"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    command: bash -c "bin/pulsar standalone"
+
+  manager:
+    image: apachepulsar/pulsar-manager:v0.4.0
+    container_name: "pulsar-manager"
+    ports:
+      - "9527:9527"
+      - "7750:7750"
+    environment:
+      - SPRING_CONFIGURATION_FILE=/pulsar-manager/pulsar-manager/application.properties
+
+
+# broker url http://192.168.91.131:8080
+# bookie url http://192.168.91.131:6650
+
+
+# 后台 http://192.168.91.131:9527
+
+#  CSRF_TOKEN=$(curl http://192.168.91.131:7750/pulsar-manager/csrf-token)
+#  curl \
+#   -H "X-XSRF-TOKEN: $CSRF_TOKEN" \
+#   -H "Cookie: XSRF-TOKEN=$CSRF_TOKEN;" \
+#   -H 'Content-Type: application/json' \
+#   -X PUT http://192.168.91.131:7750/pulsar-manager/users/superuser \
+#   -d '{"name": "pulsar", "password": "pulsar123456", "description": "whuanle", "email": "yzf@whuanle.cn"}'
