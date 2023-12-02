@@ -1,0 +1,10 @@
+
+FROM openjdk:11
+
+
+WORKDIR /app
+
+
+
+# 如果单独使用
+# docker build -f dockerfile-demo -t demo-image:latest .

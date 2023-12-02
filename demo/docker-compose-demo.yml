@@ -1,0 +1,20 @@
+version: '3'
+services:
+  myapp:
+    image: demo-image:latest
+    container_name: "demo-image"
+    build:
+      context: .
+      dockerfile: ./dockerfile-demo
+    ports:
+      - '8080:8080'
+    tty: true
+
+
+
+# docker-compose -f docker-compose-demo.yml build
+# 如果没有镜像会构建镜像，如果镜像存在并且dockerfile内容没变化也不会构建，如果内容变了就从新构建
+
+
+# docker-compose -f docker-compose-demo.yml up
+# 如果没有镜像会自动先build一次，如果有就直接启动了。如果dockerfile发生变化了需要自己手动执行build命令
