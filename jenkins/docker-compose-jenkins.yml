@@ -1,0 +1,14 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: "jenkins"
+    user: root   # 容器没有权限写目录时，给他加上用户
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+    ports:
+      - '8080:8080'
+
+
+
+
