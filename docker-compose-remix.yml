@@ -1,0 +1,7 @@
+version: '3.1'
+services:
+  remix:
+    image: remixproject/remix-ide:latest
+    container_name: remix-ide
+    ports:
+      - "80:80"
