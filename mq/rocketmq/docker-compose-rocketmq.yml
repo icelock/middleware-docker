@@ -33,7 +33,7 @@ services:
     container_name: mqbroker1s
     ports:
       - "11909:10909"
-      - "11911:10911"
+      - "11911:11911"    #要和配置文件中的监听端口一致
       - "11912:10912"
     environment:
       JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
@@ -51,7 +51,7 @@ services:
     container_name: mqbroker2m
     ports:
       - "12909:10909"
-      - "12911:10911"
+      - "12911:12911"  #要和配置文件中的监听端口一致
       - "12912:10912"
     environment:
       JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
@@ -68,7 +68,7 @@ services:
     container_name: mqbroker2s
     ports:
       - "13909:10909"
-      - "13911:10911"
+      - "13911:13911"   #要和配置文件中的监听端口一致
       - "13912:10912"
     environment:
       JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
@@ -96,3 +96,5 @@ services:
 networks:
   rocketmq-net:
     driver: bridge
+
+# 启动前，去配置文件中修改监听ip
