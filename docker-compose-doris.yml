@@ -106,6 +106,9 @@ networks:
 
 # doris启动后不需要配置，直接使用就行
 # 注意：启动前，要保证机器上有足够的磁盘空间，不然会启动失败
+# be启动失败：  Please set vm.max_map_count to be 2000000 under root using 'sysctl -w vm.max_map_count=2000000'.
+
+
 
 # 9010 是fe之间的通讯端口
 # 9050 是be的通讯端口？
