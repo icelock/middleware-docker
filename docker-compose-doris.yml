@@ -90,6 +90,7 @@ services:
 
   doris-mysql:
     image: mysql:5.7
+    container_name: "client"
     environment:
       MYSQL_ROOT_PASSWORD: 123456
     networks:
@@ -104,6 +105,7 @@ networks:
 
 
 # doris启动后不需要配置，直接使用就行
+# 注意：启动前，要保证机器上有足够的磁盘空间，不然会启动失败
 
 # 9010 是fe之间的通讯端口
 # 9050 是be的通讯端口？
