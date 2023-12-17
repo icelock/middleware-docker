@@ -1,0 +1,45 @@
+version: "3.3"
+services:
+  skywalking-elasticsearch:
+    image: elasticsearch:7.8.0
+    restart: "no"
+    container_name: my-skywalking-elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - discovery.type=single-node
+    networks:
+      - skywalking
+  skywalking-oap-server:
+    image: apache/skywalking-oap-server:9.3.0
+    restart: "always"
+    container_name: my-skywalking-oap-server
+    ports:
+      - "11800:11800"
+      - "12800:12800"
+    depends_on:
+      - skywalking-elasticsearch
+    environment:
+      SW_STORAGE: "elasticsearch"
+      SW_STORAGE_ES_CLUSTER_NODES: "skywalking-elasticsearch:9200"
+    networks:
+      - skywalking
+  skywalking-ui:
+    image: apache/skywalking-ui:9.3.0
+    restart: "no"
+    container_name: my-skywalking-ui
+    ports:
+      - "8080:8080"
+    depends_on:
+      - skywalking-oap-server
+    environment:
+      SW_OAP_ADDRESS: "http://skywalking-oap-server:12800"
+    networks:
+      - skywalking
+networks:
+  skywalking:
+    driver: bridge
+
