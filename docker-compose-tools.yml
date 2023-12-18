@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  busybox:
+    image: busybox:latest
+    container_name: "busybox"
+    tty: true
+
+  curl:
+    image: curlimages/curl:8.5.0
+    container_name: "curl"
+    command: sleep infinity
+    tty: true
+
+
