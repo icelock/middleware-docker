@@ -1,0 +1,13 @@
+version: '3'
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+
+
+# 默认用户名 root
+# 查看密码
+# docker exec -it 7a32c324c4d7 grep 'Password:' /etc/gitlab/initial_root_password
