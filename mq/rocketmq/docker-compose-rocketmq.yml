@@ -1,100 +1,29 @@
-version: "3"
+version: '3.7'
 services:
-  mqnamesrv:
-    image: apache/rocketmq:4.9.4
-    container_name: mqnamesrv
+  # NameServer服务配置
+  namesrv:
+    image: apache/rocketmq:4.9.3
+    container_name: rmqnamesrv
     ports:
       - "9876:9876"
-    environment:
-      JAVA_OPT: -server -Xms512m -Xmx512m
     command: sh mqnamesrv
-    networks:
-      - rocketmq-net
 
-  mqbroker1m:
-    image: apache/rocketmq:4.9.4
-    container_name: mqbroker1m
+  # Broker服务配置
+  broker:
+    image: apache/rocketmq:4.9.3
+    container_name: rmqbroker
     ports:
-      - "10909:10909"
-      - "10911:10911"
-      - "10912:10912"
+      - "10911:10911"  # Broker服务端口
+      - "10909:10909"  # Broker HA服务端口
     environment:
-      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
-    volumes:
-      - ./2m-2s-async/broker-a.properties:/home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    command: sh mqbroker -n mqnamesrv:9876 -c /home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    depends_on:
-      - mqnamesrv
-    networks:
-      - rocketmq-net
-
-  mqbroker1s:
-    image: apache/rocketmq:4.9.4
-    container_name: mqbroker1s
-    ports:
-      - "11909:10909"
-      - "11911:11911"    #要和配置文件中的监听端口一致
-      - "11912:10912"
-    environment:
-      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
-    volumes:
-      - ./2m-2s-async/broker-a-s.properties:/home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    command: sh mqbroker -n mqnamesrv:9876 -c /home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    depends_on:
-      - mqnamesrv
-    networks:
-      - rocketmq-net
+      - "NAMESRV_ADDR=namesrv:9876"
+      - "JAVA_OPTS=-Duser.home=/opt"
+      - "JAVA_OPT_EXT=-server -Xms512m -Xmx512m -Xmn256m"
+    command: sh mqbroker -n namesrv:9876 -c /home/rocketmq/rocketmq-4.9.3/conf/broker.conf
 
 
-  mqbroker2m:
-    image: apache/rocketmq:4.9.4
-    container_name: mqbroker2m
-    ports:
-      - "12909:10909"
-      - "12911:12911"  #要和配置文件中的监听端口一致
-      - "12912:10912"
-    environment:
-      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
-    volumes:
-      - ./2m-2s-async/broker-b.properties:/home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    command: sh mqbroker -n mqnamesrv:9876 -c /home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    depends_on:
-      - mqnamesrv
-    networks:
-      - rocketmq-net
+#查看 RocketMQ 的状态
+# ./mqadmin clusterList -n namesrv:9876
 
-  mqbroker2s:
-    image: apache/rocketmq:4.9.4
-    container_name: mqbroker2s
-    ports:
-      - "13909:10909"
-      - "13911:13911"   #要和配置文件中的监听端口一致
-      - "13912:10912"
-    environment:
-      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
-    volumes:
-      - ./2m-2s-async/broker-b-s.properties:/home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    command: sh mqbroker -n mqnamesrv:9876 -c /home/rocketmq/rocketmq-4.9.4/conf/broker.conf
-    depends_on:
-      - mqnamesrv
-    networks:
-      - rocketmq-net
-
-
-  mqconsole:
-    image: apacherocketmq/rocketmq-dashboard:latest
-    container_name: dashboard
-    ports:
-      - "19876:19876"
-    environment:
-      JAVA_OPTS: -Dserver.port=19876 -Drocketmq.namesrv.addr=mqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
-    depends_on:
-      - mqnamesrv
-    networks:
-      - rocketmq-net
-
-networks:
-  rocketmq-net:
-    driver: bridge
-
-# 启动前，去配置文件中修改监听ip
+#你也可以创建 Topic
+# ./mqadmin updateTopic -n namesrv:9876 -c DefaultCluster -t testTopic
