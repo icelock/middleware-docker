@@ -5,29 +5,6 @@ services:
     container_name: "node-exporter"
     ports:
       - "9100:9100"
-    restart: always
-    networks:
-      - prometheus-net
-
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: "prometheus"
-    restart: always
-    ports:
-      - "9090:9090"
-    volumes:
-      - /root/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - prometheus-net
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: "grafana"
-    ports:
-      - "3000:3000"
-    restart: always
-    networks:
-      - prometheus-net
 
   pushgateway:
     image: prom/pushgateway:latest
@@ -35,10 +12,6 @@ services:
     command: --persistence.file=/pushgateway/pushgateway.data
     ports:
       - "9091:9091"
-    restart: always
-    networks:
-      - prometheus-net
-
 
   alertmanager:
     image: prom/alertmanager:latest
@@ -46,14 +19,21 @@ services:
     command: --config.file=/etc/alertmanager/alertmanager.yml
     ports:
       - "9093:9093"
-    restart: always
-    networks:
-      - prometheus-net
 
-# 创建网络
-networks:
-  prometheus-net:
-    driver: bridge
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: "prometheus"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
-# prometheus http://192.168.91.131:9090/
-# grafana http://192.168.91.131:3000/  admin/admin
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: "grafana"
+    ports:
+      - "3000:3000"
+
+# prometheus http://127.0.0.0:9090/
+# grafana http://127.0.0.1:3000/  admin/admin
