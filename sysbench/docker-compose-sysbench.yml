@@ -1,7 +1,0 @@
-version: '3'
-services:
-  sysbench:
-    image: "my-sysbench:latest"
-    container_name: "sysbench"
-    tty: true
-

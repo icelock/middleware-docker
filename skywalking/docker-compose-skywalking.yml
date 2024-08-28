@@ -1,45 +1,39 @@
-version: "3.3"
+version: '3.7'
 services:
-  skywalking-elasticsearch:
-    image: elasticsearch:7.8.0
-    restart: "no"
-    container_name: my-skywalking-elasticsearch
+  oap:
+    image: apache/skywalking-oap-server:9.5.0
+    container_name: skywalking-oap
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "12800:12800"  # OAP服务的gRPC端口
+      - "11800:11800"  # OAP服务的HTTP端口
     environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      SW_STORAGE: elasticsearch  # 使用Elasticsearch作为存储
+      SW_STORAGE_ES_CLUSTER_NODES: elasticsearch:9200  # 指定Elasticsearch节点
+    depends_on:
+      - elasticsearch
+
+  ui:
+    image: apache/skywalking-ui:9.5.0
+    container_name: skywalking-ui
+    ports:
+      - "8080:8080"  # SkyWalking UI的HTTP端口
+    environment:
+      SW_OAP_ADDRESS: http://oap:12800  # 指定OAP的地址
+    depends_on:
+      - oap
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch
+    environment:
       - discovery.type=single-node
-    networks:
-      - skywalking
-  skywalking-oap-server:
-    image: apache/skywalking-oap-server:9.3.0
-    restart: "always"
-    container_name: my-skywalking-oap-server
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
-      - "11800:11800"
-      - "12800:12800"
-    depends_on:
-      - skywalking-elasticsearch
-    environment:
-      SW_STORAGE: "elasticsearch"
-      SW_STORAGE_ES_CLUSTER_NODES: "skywalking-elasticsearch:9200"
-    networks:
-      - skywalking
-  skywalking-ui:
-    image: apache/skywalking-ui:9.3.0
-    restart: "no"
-    container_name: my-skywalking-ui
-    ports:
-      - "8080:8080"
-    depends_on:
-      - skywalking-oap-server
-    environment:
-      SW_OAP_ADDRESS: "http://skywalking-oap-server:12800"
-    networks:
-      - skywalking
-networks:
-  skywalking:
-    driver: bridge
+      - "9200:9200"  # Elasticsearch的HTTP端口
+      - "9300:9300"  # Elasticsearch的TCP端口
 
