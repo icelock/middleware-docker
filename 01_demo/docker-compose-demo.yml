@@ -5,7 +5,7 @@ services:
     container_name: "demo-image"
     build:
       context: .
-      dockerfile: ./dockerfile-demo
+      dockerfile: Dockerfile
     ports:
       - '8080:8080'
     tty: true
