@@ -9,10 +9,10 @@ services:
     command:
       - --name=pd1
       - --client-urls=http://0.0.0.0:2379
-      - --advertise-client-urls=http://192.168.91.131:2379
+      - --advertise-client-urls=http://pd1:2379
       - --peer-urls=http://0.0.0.0:2380
-      - --advertise-peer-urls=http://192.168.91.131:2380
-      - --initial-cluster=pd1=http://192.168.91.131:2380
+      - --advertise-peer-urls=http://pd1:2380
+      - --initial-cluster=pd1=http://pd1:2380
   tikv1:
     image: pingcap/tikv:v7.1.2
     container_name: tikv1
@@ -20,8 +20,8 @@ services:
       - '20160:20160'
     command:
       - --addr=0.0.0.0:20160
-      - --advertise-addr=192.168.91.131:20160
-      - --pd=192.168.91.131:2379
+      - --advertise-addr=tikv1:20160
+      - --pd=pd1:2379
     depends_on:
       - "pd1"
 
@@ -32,8 +32,9 @@ services:
       - "10080:10080"
     command:
       - --store=tikv
-      - --path=192.168.91.131:2379
+      - --path=pd1:2379
     depends_on:
       - "tikv1"
 
 
+#使用 127.0.0.1:4000 进行连接，root用户 无密码
