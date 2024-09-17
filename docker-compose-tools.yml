@@ -1,14 +1,15 @@
 version: '3.1'
 services:
-  busybox:
+  busybox2:
     image: busybox:latest
     container_name: "busybox"
     tty: true
 
-  curl:
+  curl2:
     image: curlimages/curl:8.5.0
     container_name: "curl"
     command: sleep infinity
     tty: true
 
 
+#服务名和容器名都可以作为域名
