@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
+    container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: test_db
@@ -17,7 +18,10 @@ services:
       - "9200:9200"
 
   job-manager:
-    image: flink:latest
+    image: my-flink:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - JOB_MANAGER_RPC_ADDRESS=job-manager
     command: jobmanager
@@ -25,7 +29,10 @@ services:
       - "8081:8081"
 
   task-manager:
-    image: flink:latest
+    image: my-flink:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - JOB_MANAGER_RPC_ADDRESS=job-manager
     command: taskmanager
