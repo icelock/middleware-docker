@@ -16,16 +16,18 @@ services:
     ports:
       - "9200:9200"
 
-  flink-job-manager:
-    image: flink:1.13-scala_2.11
+  job-manager:
+    image: flink:latest
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=job-manager
+    command: jobmanager
     ports:
       - "8081:8081"
-    command: jobmanager
-    environment:
-      - FLINK_PROPERTIES=jobmanager.web.port:8081
 
-  flink-task-manager:
-    image: flink:1.13-scala_2.11
-    depends_on:
-      - flink-job-manager
+  task-manager:
+    image: flink:latest
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=job-manager
     command: taskmanager
+    depends_on:
+      - job-manager
