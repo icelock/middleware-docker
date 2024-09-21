@@ -1,0 +1,24 @@
+version: '3'
+services:
+  job-manager:
+    image: flink:1.14
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=job-manager
+    command: jobmanager
+    ports:
+      - "8081:8081"
+
+  task-manager:
+    image: flink:1.14
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=job-manager
+    command: taskmanager
+    depends_on:
+      - job-manager
+
+
+#界面
+# http://127.0.0.1:8081/
+
+# 扩展多个taskmanager
+# docker-compose -f docker-compose.yml scale taskmanager=5
