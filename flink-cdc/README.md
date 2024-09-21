@@ -1,13 +1,9 @@
-
-
-
 （1）在mysql中创建表：
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
-    email VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    email VARCHAR(100)
 );
 
 
@@ -22,7 +18,6 @@ CREATE TABLE mysql_source (
     id INT,
     name STRING,
     email STRING,
-    created_at TIMESTAMP(3),
     PRIMARY KEY(id) NOT ENFORCED
 ) WITH (
     'connector' = 'mysql-cdc',
@@ -49,8 +44,7 @@ PUT /users_index
             "properties": {
                 "id": { "type": "integer" },
                 "name": { "type": "text" },
-                "email": { "type": "keyword" },
-                "created_at": { "type": "date" }
+                "email": { "type": "keyword" }
             }
         }
     }
@@ -62,7 +56,6 @@ CREATE TABLE es_sink (
     id INT,
     name STRING,
     email STRING,
-    created_at TIMESTAMP(3),
     PRIMARY KEY(id) NOT ENFORCED
     ) WITH (
         'connector' = 'elasticsearch-6',

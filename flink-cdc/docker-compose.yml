@@ -38,3 +38,5 @@ services:
     command: taskmanager
     depends_on:
       - job-manager
+
+
