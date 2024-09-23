@@ -1,0 +1,20 @@
+version: '3'
+services:
+  arthas-tunnel-server:
+    image: arthas-tunnel-server:latest
+    container_name: "arthas-tunnel-server"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+      - '7777:7777'
+
+  busybox2:
+    image: busybox:latest
+    container_name: "busybox"
+    tty: true
+
+
+# 查看注册了那些应用
+# http://127.0.0.1:8080/actuator/arthas
